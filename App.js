@@ -9,6 +9,7 @@ import { useFonts } from "expo-font";
 import Colors from "./constants/Colors";
 
 // Components Imports
+// Just for testing
 import StartGame from "./screens/StartGame";
 import GameOver from "./screens/GameOver";
 import Game from "./screens/Game";
