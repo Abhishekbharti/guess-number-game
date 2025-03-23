@@ -1,6 +1,12 @@
 // Import React Native Components
 import { useState, useEffect } from "react";
-import { View, StyleSheet, Alert, Text, FlatList } from "react-native";
+import {
+    View,
+    StyleSheet,
+    Alert,
+    FlatList,
+    useWindowDimensions,
+} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 // Importing Custom Components
@@ -28,6 +34,8 @@ export default function Game({ userNumber, onGameOver }) {
     const initialGuess = generateRandomBetween(1, 100, userNumber);
     const [guessNumber, setGuessNumber] = useState(initialGuess);
     const [guessRounds, setGuessRounds] = useState([initialGuess]);
+
+    const { width, height } = useWindowDimensions();
 
     useEffect(() => {
         if (guessNumber === userNumber) {
@@ -69,9 +77,8 @@ export default function Game({ userNumber, onGameOver }) {
 
     const guessRoundsListLength = guessRounds.length;
 
-    return (
-        <View style={styles.container}>
-            <Title>Opponent's Guess</Title>
+    let content = (
+        <>
             <NumberContainer style={styles.guessNumber}>
                 {guessNumber}
             </NumberContainer>
@@ -88,7 +95,34 @@ export default function Game({ userNumber, onGameOver }) {
                     </CustomButton>
                 </View>
             </Card>
-            <View style={styles.listContainer}>
+        </>
+    );
+
+    if (width > height) {
+        content = (
+            <View style={styles.landscapeActionButton}>
+                <CustomButton onPress={() => nextGuessHander("lower")}>
+                    <Ionicons name="remove" size={24} color="#fff" />
+                </CustomButton>
+                <NumberContainer style={styles.guessNumber}>
+                    {guessNumber}
+                </NumberContainer>
+                <CustomButton onPress={() => nextGuessHander("higher")}>
+                    <Ionicons name="add" size={24} color="#fff" />
+                </CustomButton>
+            </View>
+        );
+    }
+
+    const marginTopDistance = width > height ? 0 : 24;
+
+    return (
+        <View style={styles.container}>
+            <Title>Opponent's Guess</Title>
+            {content}
+            <View
+                style={[styles.listContainer, { marginTop: marginTopDistance }]}
+            >
                 <FlatList
                     data={guessRounds}
                     renderItem={(data) => (
@@ -107,6 +141,7 @@ export default function Game({ userNumber, onGameOver }) {
 const styles = StyleSheet.create({
     container: {
         padding: 24,
+        paddingBottom: 2,
         flex: 1,
     },
     guessNumber: {
@@ -122,5 +157,10 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 24,
         padding: 8,
+    },
+    landscapeActionButton: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
     },
 });

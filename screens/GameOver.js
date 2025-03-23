@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image, ScrollView } from "react-native";
 import Title from "../components/UI/Title";
 import CustomButton from "../components/UI/CustomButton";
 import Colors from "../constants/Colors";
@@ -9,22 +9,26 @@ export default function GameOver({
     onRestartGame,
 }) {
     return (
-        <View style={styles.rootContainer}>
-            <Title>GAME OVER!</Title>
-            <View style={styles.imageContainer}>
-                <Image
-                    style={styles.image}
-                    source={require("../assets/images/success.png")}
-                />
+        <ScrollView>
+            <View style={styles.rootContainer}>
+                <Title>GAME OVER!</Title>
+                <View style={styles.imageContainer}>
+                    <Image
+                        style={styles.image}
+                        source={require("../assets/images/success.png")}
+                    />
+                </View>
+                <Text style={styles.summaryText}>
+                    Your phone needed{" "}
+                    <Text style={styles.highlight}>{numberOfRounds}</Text>{" "}
+                    rounds to guess the number{" "}
+                    <Text style={styles.highlight}>{userNumber}</Text>
+                </Text>
+                <CustomButton onPress={onRestartGame}>
+                    Start New Game
+                </CustomButton>
             </View>
-            <Text style={styles.summaryText}>
-                Your phone needed{" "}
-                <Text style={styles.highlight}>{numberOfRounds}</Text> rounds to
-                guess the number{" "}
-                <Text style={styles.highlight}>{userNumber}</Text>
-            </Text>
-            <CustomButton onPress={onRestartGame}>Start New Game</CustomButton>
-        </View>
+        </ScrollView>
     );
 }
 
